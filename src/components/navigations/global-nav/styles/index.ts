@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 export const Nav = styled.nav`
   ${({}) => css`
     height: 44px;
+    padding: 0 1rem;
     .global-nav-links {
       display: flex;
       align-items: center;

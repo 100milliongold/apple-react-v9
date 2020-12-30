@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react'
+import { ScrollSection1 as Section, Description } from './styles'
 
 interface Props {}
 
 function ScrollSection1({}: Props): ReactElement {
   return (
-    <section className="scroll-section" id="scroll-section-1">
-      <p className="description">
+    <Section className="scroll-section" id="scroll-section-1">
+      <Description className="description">
         <strong>보통 스크롤 영역</strong>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae est
         ipsa minima, eligendi error cum vel dolorum pariatur officia facilis
@@ -29,8 +30,8 @@ function ScrollSection1({}: Props): ReactElement {
         qui placeat temporibus inventore obcaecati. Recusandae, sequi
         dignissimos in natus eum maiores dolorem, deleniti nobis accusantium,
         aspernatur beatae.
-      </p>
-    </section>
+      </Description>
+    </Section>
   )
 }
 

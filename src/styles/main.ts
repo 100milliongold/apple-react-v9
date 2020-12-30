@@ -4,7 +4,7 @@ export default createGlobalStyle`
   ${() => css`
     html {
       font-family: 'Noto Sans KR', sans-serif;
-      font-style: 14px;
+      font-size: 14px;
       body {
         overflow-x: hidden;
         color: rgb(29, 29, 31);

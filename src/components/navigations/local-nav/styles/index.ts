@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 export const LocalNav = styled.nav`
   ${({}) => css`
     height: 52px;
+    padding: 0 1rem;
     border-bottom: 1px solid #ddd;
     .local-nav-links {
       display: flex;
