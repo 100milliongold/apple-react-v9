@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import Section from './styles'
+import { ScrollSection0 as Section } from './styles'
 import { MainMessage } from '../styles'
 
 interface Props {}

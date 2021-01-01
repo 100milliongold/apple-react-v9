@@ -1,20 +1,21 @@
 import React, { ReactElement } from 'react'
 import Section from './styles'
+import { MidMessage, CanvasCaption } from '../styles'
 
 interface Props {}
 
 function ScrollSection3({}: Props): ReactElement {
   return (
     <Section className="scroll-section" id="scroll-section-3">
-      <p className="mid-message">
+      <MidMessage className="mid-message">
         <strong>Retina 머그</strong>
         <br />
         아이디어를 광활하게 펼칠
         <br />
         아름답고 부드러운 음료 공간.
-      </p>
+      </MidMessage>
 
-      <p className="canvas-caption">
+      <CanvasCaption className="canvas-caption">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet at
         fuga quae perspiciatis veniam impedit et, ratione est optio porro.
         Incidunt aperiam nemo voluptas odit quisquam harum in mollitia. Incidunt
@@ -26,7 +27,7 @@ function ScrollSection3({}: Props): ReactElement {
         deleniti quis, et, quibusdam, est autem voluptate rem voluptas. Ratione
         soluta similique harum nihil vel. Quas inventore perferendis iusto
         explicabo animi eos ratione obcaecati.
-      </p>
+      </CanvasCaption>
     </Section>
   )
 }

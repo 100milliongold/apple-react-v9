@@ -7,8 +7,10 @@ export const ScrollSection1 = styled(Section)`
 `
 
 export const Description = styled.p`
-  ${({}) => css`
+  ${({ theme: { device } }) => css`
+    max-width: 1000px;
     padding: 0 1rem;
+    margin: 0 auto;
     font-size: 1.2rem;
     color: #888;
     strong {
@@ -16,6 +18,14 @@ export const Description = styled.p`
       margin-right: 0.2em;
       font-size: 3rem;
       color: rgb(29, 29, 31);
+    }
+
+    // (min-width: 1024px)
+    @media ${device.laptop} {
+      font-size: 2rem;
+      strong {
+        font-size: 6rem;
+      }
     }
   `}
 `

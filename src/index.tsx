@@ -9,10 +9,10 @@ import { DefaultStyles, MainStyles, theme } from 'styles'
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <DefaultStyles />
-    <MainStyles />
     <Navigations />
     <Sections />
     <Footer />
+    <MainStyles />
   </ThemeProvider>,
   document.getElementById('container')
 )

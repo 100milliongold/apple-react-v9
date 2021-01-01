@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react'
+import { Footer } from './styles'
 
 interface Props {}
 
-function Footer({}: Props): ReactElement {
-  return <footer className="footer">2020, 1분코딩</footer>
+function FooterSection({}: Props): ReactElement {
+  return <Footer className="footer">2020, 1분코딩</Footer>
 }
 
-export default Footer
+export default FooterSection
