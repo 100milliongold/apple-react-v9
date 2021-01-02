@@ -1,4 +1,10 @@
-import React, { ReactElement, useState, useEffect, useCallback } from 'react'
+import React, {
+  ReactElement,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react'
 import { SceneInfo } from 'typings'
 
 import ScrollSection0 from './scroll-section-0'
@@ -6,45 +12,50 @@ import ScrollSection1 from './scroll-section-1'
 import ScrollSection2 from './scroll-section-2'
 import ScrollSection3 from './scroll-section-3'
 
+const initScene: SceneInfo[] = [
+  {
+    // 0
+    type: 'stick',
+    heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
+    scrollHeight: 0,
+    objs: {
+      container: undefined,
+    },
+  },
+  {
+    // 1
+    type: 'normal',
+    heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
+    scrollHeight: 0,
+    objs: {
+      container: undefined,
+    },
+  },
+  {
+    // 2
+    type: 'stick',
+    heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
+    scrollHeight: 0,
+    objs: {
+      container: undefined,
+    },
+  },
+  {
+    // 3
+    type: 'stick',
+    heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
+    scrollHeight: 0,
+    objs: {
+      container: undefined,
+    },
+  },
+]
+
 function Sections(): ReactElement {
-  const [sceneInfo, setSceneInfo] = useState<SceneInfo[]>([
-    {
-      // 0
-      type: 'stick',
-      heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
-      scrollHeight: 0,
-      objs: {
-        container: undefined,
-      },
-    },
-    {
-      // 1
-      type: 'normal',
-      heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
-      scrollHeight: 0,
-      objs: {
-        container: undefined,
-      },
-    },
-    {
-      // 2
-      type: 'stick',
-      heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
-      scrollHeight: 0,
-      objs: {
-        container: undefined,
-      },
-    },
-    {
-      // 3
-      type: 'stick',
-      heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
-      scrollHeight: 0,
-      objs: {
-        container: undefined,
-      },
-    },
-  ])
+  // window.pageYOffset 대신 쓸변수
+  const [yOffset, setYOffset] = useState<number>(0)
+
+  const [sceneInfo, setSceneInfo] = useState<SceneInfo[]>(initScene)
 
   /**
    * 최초 로딩시 높이값 설정
@@ -88,6 +99,18 @@ function Sections(): ReactElement {
     [setSceneInfo, sceneInfo]
   )
 
+  /**
+   * 스크롤시 이벤트 처리
+   */
+  const scrollLoop = () => {}
+
+  useEffect(() => {
+    console.log(yOffset)
+  }, [yOffset])
+
+  /**
+   * 최초 컨포넌드 마운트시 이벤트
+   */
   useEffect(() => {
     // Handler to call on window resize
     function handleResize() {
@@ -98,8 +121,18 @@ function Sections(): ReactElement {
     window.addEventListener('resize', handleResize)
     // Call handler right away so state gets updated with initial window size
     handleResize()
-    // Remove event listener on cleanup
-    return () => window.removeEventListener('resize', handleResize)
+
+    function handleScroll() {
+      setYOffset(window.pageYOffset)
+      scrollLoop()
+    }
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      // Remove event listener on cleanup
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('scroll', handleScroll)
+    }
     // eslint-disable-next-line
   }, [])
 
