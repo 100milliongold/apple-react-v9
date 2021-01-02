@@ -55,6 +55,12 @@ function Sections(): ReactElement {
   // window.pageYOffset 대신 쓸변수
   const [yOffset, setYOffset] = useState<number>(0)
 
+  // 현재 스크롤 위치 (yOffset) 보다 이전에 위치한 스크롤 섹션들의 스크롤 높이값의 합
+  const [prevScrollHeight, setPrevScrollHeight] = useState<number>(0)
+
+  // 현재 활성화된(눈 앞에 보고 있는) 씬(scroll-section)
+  const [currentScene, setCurrentScene] = useState<number>(0)
+
   const [sceneInfo, setSceneInfo] = useState<SceneInfo[]>(initScene)
 
   /**
@@ -102,10 +108,33 @@ function Sections(): ReactElement {
   /**
    * 스크롤시 이벤트 처리
    */
-  const scrollLoop = () => {}
+  useEffect(() => {
+    // console.log(yOffset)
+
+    const total = sceneInfo
+      .filter((_, index) => index < currentScene)
+      .reduce((memo: number, { scrollHeight }) => memo + scrollHeight, 0)
+
+    setPrevScrollHeight(total)
+  }, [yOffset, sceneInfo, currentScene])
+
+  /**
+   * currentScene 설정 (yOffset 이벤트 시 동작)
+   */
+  useEffect(() => {
+    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+      const nextCurrentScene = currentScene + 1
+      setCurrentScene(nextCurrentScene)
+    }
+    if (yOffset < prevScrollHeight) {
+      if (currentScene === 0) return
+      const nextCurrentScene = currentScene + -1
+      setCurrentScene(nextCurrentScene)
+    }
+  }, [yOffset, prevScrollHeight])
 
   useEffect(() => {
-    console.log(yOffset)
+    console.log(currentScene)
   }, [yOffset])
 
   /**
@@ -124,7 +153,6 @@ function Sections(): ReactElement {
 
     function handleScroll() {
       setYOffset(window.pageYOffset)
-      scrollLoop()
     }
     window.addEventListener('scroll', handleScroll)
 

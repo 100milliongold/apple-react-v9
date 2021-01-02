@@ -2,6 +2,10 @@ import styled, { css } from 'styled-components'
 
 export const LocalNav = styled.nav`
   ${({}) => css`
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
     height: 52px;
     padding: 0 1rem;
     border-bottom: 1px solid #ddd;

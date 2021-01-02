@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 export const Section = styled.section`
   ${({}) => css`
     padding-top: 50vh;
+    border: 3px solid red;
   `}
 `
 /**
