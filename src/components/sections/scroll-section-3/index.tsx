@@ -1,12 +1,20 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef, useEffect } from 'react'
 import Section from './styles'
 import { MidMessage, CanvasCaption } from '../styles'
 
-interface Props {}
+interface Props {
+  setObj: (index: number, obj: HTMLElement) => void
+}
 
-function ScrollSection3({}: Props): ReactElement {
+function ScrollSection3({ setObj }: Props): ReactElement {
+  const sectionRef: React.RefObject<HTMLElement> = useRef(null)
+
+  useEffect(() => {
+    if (sectionRef.current != null) setObj(3, sectionRef.current)
+  }, [sectionRef.current])
+
   return (
-    <Section className="scroll-section" id="scroll-section-3">
+    <Section ref={sectionRef} className="scroll-section" id="scroll-section-3">
       <MidMessage className="mid-message">
         <strong>Retina 머그</strong>
         <br />

@@ -1,11 +1,19 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef, useEffect } from 'react'
 import { ScrollSection1 as Section, Description } from './styles'
 
-interface Props {}
+interface Props {
+  setObj: (index: number, obj: HTMLElement) => void
+}
 
-function ScrollSection1({}: Props): ReactElement {
+function ScrollSection1({ setObj }: Props): ReactElement {
+  const sectionRef: React.RefObject<HTMLElement> = useRef(null)
+
+  useEffect(() => {
+    if (sectionRef.current != null) setObj(1, sectionRef.current)
+  }, [sectionRef.current])
+
   return (
-    <Section className="scroll-section" id="scroll-section-1">
+    <Section ref={sectionRef} className="scroll-section" id="scroll-section-1">
       <Description className="description">
         <strong>보통 스크롤 영역</strong>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae est

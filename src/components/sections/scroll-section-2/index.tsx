@@ -1,12 +1,20 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef, useEffect } from 'react'
 import Section from './styles'
 import { MainMessage, DescMessage, Pin } from '../styles'
 
-interface Props {}
+interface Props {
+  setObj: (index: number, obj: HTMLElement) => void
+}
 
-function ScrollSection2({}: Props): ReactElement {
+function ScrollSection2({ setObj }: Props): ReactElement {
+  const sectionRef: React.RefObject<HTMLElement> = useRef(null)
+
+  useEffect(() => {
+    if (sectionRef.current != null) setObj(2, sectionRef.current)
+  }, [sectionRef.current])
+
   return (
-    <Section className="scroll-section" id="scroll-section-2">
+    <Section ref={sectionRef} className="scroll-section" id="scroll-section-2">
       <MainMessage className="sticky-elem main-message a">
         <p>
           <small>편안한 촉감</small>

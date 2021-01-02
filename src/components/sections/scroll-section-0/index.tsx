@@ -1,12 +1,20 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef, useEffect } from 'react'
 import { ScrollSection0 as Section } from './styles'
 import { MainMessage } from '../styles'
 
-interface Props {}
+interface Props {
+  setObj: (index: number, obj: HTMLElement) => void
+}
 
-function ScrollSection0({}: Props): ReactElement {
+function ScrollSection0({ setObj }: Props): ReactElement {
+  const sectionRef: React.RefObject<HTMLElement> = useRef(null)
+
+  useEffect(() => {
+    if (sectionRef.current != null) setObj(0, sectionRef.current)
+  }, [sectionRef.current])
+
   return (
-    <Section className="scroll-section" id="scroll-section-0">
+    <Section ref={sectionRef} className="scroll-section" id="scroll-section-0">
       <h1>AirMug Pro</h1>
       <MainMessage className="sticky-elem main-message a">
         <p>
