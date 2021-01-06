@@ -4,5 +4,9 @@ export interface SceneInfo {
   scrollHeight: number
   objs: {
     container?: HTMLElement
+    messageA?: HTMLDivElement
+    messageB?: HTMLDivElement
+    messageC?: HTMLDivElement
+    messageD?: HTMLDivElement
   }
 }

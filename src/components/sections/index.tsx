@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react'
+import React, { ReactElement, useState, useEffect, useCallback } from 'react'
 import { SceneInfo } from 'typings'
 
 import ScrollSection0 from './scroll-section-0'
@@ -20,6 +14,10 @@ const initScene: SceneInfo[] = [
     scrollHeight: 0,
     objs: {
       container: undefined,
+      messageA: undefined,
+      messageB: undefined,
+      messageC: undefined,
+      messageD: undefined,
     },
   },
   {
@@ -58,6 +56,9 @@ function Sections(): ReactElement {
   // 현재 스크롤 위치 (yOffset) 보다 이전에 위치한 스크롤 섹션들의 스크롤 높이값의 합
   const [prevScrollHeight, setPrevScrollHeight] = useState<number>(0)
 
+  // 전체 스크롤 높이
+  const [totalScrollHeight, setTotalScrollHeight] = useState<number>(0)
+
   // 현재 활성화된(눈 앞에 보고 있는) 씬(scroll-section)
   const [currentScene, setCurrentScene] = useState<number>(0)
 
@@ -82,6 +83,16 @@ function Sections(): ReactElement {
       })
 
       setSceneInfo(layout)
+
+      let total = 0
+      for (let i = 0; i < layout.length; i++) {
+        total += layout[i].scrollHeight
+        if (total >= yOffset) {
+          setCurrentScene(i)
+          break
+        }
+      }
+      setTotalScrollHeight(total)
     },
     [sceneInfo]
   )
@@ -102,7 +113,35 @@ function Sections(): ReactElement {
       })
       setSceneInfo(nextState)
     },
-    [setSceneInfo, sceneInfo]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
+  const setObjs = useCallback(
+    (
+      index: number,
+      container: HTMLElement,
+      messageA: HTMLDivElement,
+      messageB: HTMLDivElement,
+      messageC: HTMLDivElement,
+      messageD: HTMLDivElement
+    ) => {
+      const nextState = [...sceneInfo]
+      nextState[index].objs.container = container
+      nextState[index].objs.messageA = messageA
+      nextState[index].objs.messageB = messageB
+      nextState[index].objs.messageC = messageC
+      nextState[index].objs.messageD = messageD
+
+      nextState.forEach(({ objs: { container }, scrollHeight }) => {
+        if (container !== undefined) {
+          container.style.height = `${scrollHeight}px`
+        }
+      })
+      setSceneInfo(nextState)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   )
 
   /**
@@ -131,7 +170,15 @@ function Sections(): ReactElement {
       const nextCurrentScene = currentScene + -1
       setCurrentScene(nextCurrentScene)
     }
-  }, [yOffset, prevScrollHeight])
+  }, [yOffset, prevScrollHeight, setCurrentScene])
+
+  /**
+   * currentScene 업데이트시 이벤트 처리
+   */
+  useEffect(() => {
+    document.body.setAttribute('id', `show-scene-${currentScene}`)
+    return () => {}
+  }, [currentScene, totalScrollHeight])
 
   useEffect(() => {
     console.log(currentScene)
@@ -148,6 +195,7 @@ function Sections(): ReactElement {
     }
     // Add event listener
     window.addEventListener('resize', handleResize)
+    window.addEventListener('load', handleResize)
     // Call handler right away so state gets updated with initial window size
     handleResize()
 
@@ -158,7 +206,8 @@ function Sections(): ReactElement {
 
     return () => {
       // Remove event listener on cleanup
-      window.removeEventListener('resize', handleResize)
+      // window.removeEventListener('resize', handleResize)
+      window.removeEventListener('load', handleResize)
       window.removeEventListener('scroll', handleScroll)
     }
     // eslint-disable-next-line
@@ -166,10 +215,10 @@ function Sections(): ReactElement {
 
   return (
     <>
-      <ScrollSection0 setObj={setObj} />
-      <ScrollSection1 setObj={setObj} />
-      <ScrollSection2 setObj={setObj} />
-      <ScrollSection3 setObj={setObj} />
+      <ScrollSection0 setObjs={setObjs} setObj={setObj} />
+      <ScrollSection1 setSceneInfo={setSceneInfo} setObj={setObj} />
+      <ScrollSection2 setSceneInfo={setSceneInfo} setObj={setObj} />
+      <ScrollSection3 setSceneInfo={setSceneInfo} setObj={setObj} />
     </>
   )
 }

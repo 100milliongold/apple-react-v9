@@ -1,9 +1,11 @@
 import React, { ReactElement, useRef, useEffect } from 'react'
 import Section from './styles'
 import { MainMessage, DescMessage, Pin } from '../styles'
+import { SceneInfo } from 'typings'
 
 interface Props {
   setObj: (index: number, obj: HTMLElement) => void
+  setSceneInfo: React.Dispatch<React.SetStateAction<SceneInfo[]>>
 }
 
 function ScrollSection2({ setObj }: Props): ReactElement {
