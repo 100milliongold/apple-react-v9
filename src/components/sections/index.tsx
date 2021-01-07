@@ -19,6 +19,10 @@ const initScene: SceneInfo[] = [
       messageC: undefined,
       messageD: undefined,
     },
+    values: {
+      messageA_opacity: [0, 1, { start: 0.1, end: 0.2 }],
+      messageB_opacity: [0, 1, { start: 0.3, end: 0.4 }],
+    },
   },
   {
     // 1
@@ -64,6 +68,79 @@ function Sections(): ReactElement {
 
   const [sceneInfo, setSceneInfo] = useState<SceneInfo[]>(initScene)
 
+  const [enterNewScene, setEnterNewScene] = useState<boolean>(false) // 새로운 scene 이 시작된 순간 true
+
+  /**
+   * 투명도 계산
+   */
+  const calcValues = useCallback(
+    (values: any[], currentYOffset: number) => {
+      let rv
+      // 현재 씬(스크롤섹션)에서 스크롤된 점위를 비율로 구하기
+
+      const scrollHeight = sceneInfo[currentScene]!.scrollHeight
+      const scrollRatio = currentYOffset / scrollHeight
+
+      if (values.length === 3) {
+        // start ~ end 사이에 애니메이션 진행
+        const partScrollStart = values[2].start * scrollHeight
+        const partScrollEnd = values[2].end * scrollHeight
+        const partScrollHeight = partScrollEnd - partScrollStart
+
+        if (
+          currentYOffset >= partScrollStart &&
+          currentYOffset <= partScrollEnd
+        ) {
+          rv =
+            ((currentYOffset - partScrollStart) / partScrollHeight) *
+              (values[1] - values[0]) +
+            values[0]
+        } else if (currentYOffset < partScrollStart) {
+          rv = values[0]
+        } else if (currentYOffset > partScrollEnd) {
+          rv = values[1]
+        }
+      } else {
+        rv = scrollRatio * (values[1] - values[0]) + values[0]
+      }
+
+      return rv
+    },
+    [currentScene, sceneInfo]
+  )
+
+  const playAnimation = useCallback(() => {
+    const objs = sceneInfo[currentScene].objs
+    const values = sceneInfo[currentScene].values
+    const currentYOffset = yOffset - prevScrollHeight
+
+    switch (currentScene) {
+      case 0:
+        // console.log('0 play')
+        if (values !== undefined && values.messageA_opacity !== undefined) {
+          let messageA_opacity_in = calcValues(
+            values.messageA_opacity!,
+            currentYOffset
+          )
+          objs.messageA!.style.opacity = `${messageA_opacity_in}`
+          console.log(messageA_opacity_in)
+        }
+        break
+      case 1:
+        // console.log('1 play')
+        break
+      case 2:
+        // console.log('2 play')
+        break
+      case 3:
+        // console.log('3 play')
+        break
+
+      default:
+        break
+    }
+  }, [calcValues, currentScene, prevScrollHeight, sceneInfo, yOffset])
+
   /**
    * 최초 로딩시 높이값 설정
    * @param height
@@ -94,7 +171,7 @@ function Sections(): ReactElement {
       }
       setTotalScrollHeight(total)
     },
-    [sceneInfo]
+    [sceneInfo, yOffset]
   )
 
   /**
@@ -158,19 +235,29 @@ function Sections(): ReactElement {
   }, [yOffset, sceneInfo, currentScene])
 
   /**
-   * currentScene 설정 (yOffset 이벤트 시 동작)
+   * currentScene 설정 (yOffset 이벤트 시 동작) scrollLoop
    */
   useEffect(() => {
+    setEnterNewScene(false)
     if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
       const nextCurrentScene = currentScene + 1
+      setEnterNewScene(true)
       setCurrentScene(nextCurrentScene)
     }
     if (yOffset < prevScrollHeight) {
       if (currentScene === 0) return
       const nextCurrentScene = currentScene + -1
+      setEnterNewScene(true)
       setCurrentScene(nextCurrentScene)
     }
   }, [yOffset, prevScrollHeight, setCurrentScene])
+
+  useEffect(() => {
+    if (!enterNewScene) {
+      playAnimation()
+    }
+    return () => {}
+  }, [enterNewScene, playAnimation])
 
   /**
    * currentScene 업데이트시 이벤트 처리
@@ -180,9 +267,9 @@ function Sections(): ReactElement {
     return () => {}
   }, [currentScene, totalScrollHeight])
 
-  useEffect(() => {
-    console.log(currentScene)
-  }, [yOffset])
+  // useEffect(() => {
+  //   console.log(currentScene)
+  // }, [yOffset])
 
   /**
    * 최초 컨포넌드 마운트시 이벤트

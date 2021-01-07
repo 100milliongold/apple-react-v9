@@ -9,4 +9,8 @@ export interface SceneInfo {
     messageC?: HTMLDivElement
     messageD?: HTMLDivElement
   }
+  values?: {
+    messageA_opacity?: any[]
+    messageB_opacity?: any[]
+  }
 }

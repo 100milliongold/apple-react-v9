@@ -17,6 +17,8 @@ export const MainMessage = styled.div`
     margin: 5px 0;
     height: 3em;
     font-size: 2.5rem;
+
+    opacity: 0;
     p {
       font-weight: bold;
       text-align: center;
