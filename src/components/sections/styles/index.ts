@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 export const Section = styled.section`
   ${({}) => css`
     padding-top: 50vh;
-    border: 3px solid red;
+    /* border: 3px solid red; */
   `}
 `
 /**
@@ -38,6 +38,7 @@ export const MainMessage = styled.div`
       left: 0;
       width: 100%;
       display: none;
+      z-index: 10;
     }
 
     // (min-width: 1024px)

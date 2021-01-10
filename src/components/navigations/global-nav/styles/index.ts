@@ -5,6 +5,7 @@ export const Nav = styled.nav`
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 10;
     width: 100%;
     height: 44px;
     padding: 0 1rem;

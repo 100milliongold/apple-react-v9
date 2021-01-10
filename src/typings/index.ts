@@ -5,6 +5,8 @@ export interface SceneInfo {
   objs: {
     container?: HTMLElement
     content?: HTMLParagraphElement
+    canvas?: HTMLCanvasElement
+    context?: CanvasRenderingContext2D
     messageA?: HTMLDivElement
     messageB?: HTMLDivElement
     messageC?: HTMLDivElement
@@ -12,8 +14,11 @@ export interface SceneInfo {
     pinB?: HTMLDivElement
     pinC?: HTMLDivElement
     canvasCaption?: HTMLParagraphElement
+    vidioImages?: any[]
   }
   values?: {
+    videoImageCount?: number
+    imageSequemce?: number[]
     messageA_opacity_in?: any[]
     messageB_opacity_in?: any[]
     messageC_opacity_in?: any[]

@@ -5,6 +5,7 @@ export const LocalNav = styled.nav`
     position: absolute;
     top: 45px;
     left: 0;
+    z-index: 11;
     width: 100%;
     height: 52px;
     padding: 0 1rem;

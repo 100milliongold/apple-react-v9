@@ -26,8 +26,13 @@ const initScene: SceneInfo[] = [
       messageB: undefined,
       messageC: undefined,
       messageD: undefined,
+      canvas: undefined,
+      context: undefined,
+      vidioImages: [],
     },
     values: {
+      videoImageCount: 300,
+      imageSequemce: [0, 299],
       messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
       messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
       messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }],
@@ -154,7 +159,7 @@ function Sections(): ReactElement {
         rv = scrollRatio * (values[1] - values[0]) + values[0]
       }
 
-      return rv
+      return isNaN(rv) ? 0 : rv
     },
     [currentScene, sceneInfo]
   )
@@ -171,7 +176,17 @@ function Sections(): ReactElement {
     switch (currentScene) {
       case 0:
         // console.log('0 play')
+
         if (values !== undefined) {
+          let sequence = Math.round(
+            calcValues(values.imageSequemce!, currentYOffset)
+          )
+
+          if (objs.vidioImages!.length > 0 && sequence <= 300) {
+            // console.log(sequence, objs.vidioImages![sequence])
+            objs.context!.drawImage(objs.vidioImages![sequence], 0, 0)
+          }
+
           if (scrollRatio <= 0.22) {
             //in
             const messageA_opacity_in = calcValues(
@@ -394,18 +409,30 @@ function Sections(): ReactElement {
       messageA: HTMLDivElement,
       messageB: HTMLDivElement,
       messageC: HTMLDivElement,
-      messageD: HTMLDivElement
+      messageD: HTMLDivElement,
+      canvas: HTMLCanvasElement
     ) => {
       sceneInfo[0].objs.container = container
       sceneInfo[0].objs.messageA = messageA
       sceneInfo[0].objs.messageB = messageB
       sceneInfo[0].objs.messageC = messageC
       sceneInfo[0].objs.messageD = messageD
+      sceneInfo[0].objs.canvas = canvas
+      sceneInfo[0].objs.context = canvas.getContext('2d')!
       sceneInfo[0].objs.container!.style.height = `${sceneInfo[1].scrollHeight}px`
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
+
+  const setCanvasImages = useCallback(
+    (imgs: HTMLImageElement[]) => {
+      sceneInfo[0].objs.vidioImages = imgs
+      console.log(imgs)
+    },
+    [sceneInfo]
+  )
+
   /**
    * ScrollSection0 ~ ScrollSection3 항목들의 virtual dom 의 겍체를 적용함
    */
@@ -484,7 +511,7 @@ function Sections(): ReactElement {
       setEnterNewScene(true)
       setCurrentScene(nextCurrentScene)
     }
-  }, [yOffset, prevScrollHeight, setCurrentScene])
+  }, [yOffset, prevScrollHeight, setCurrentScene, currentScene, sceneInfo])
 
   useEffect(() => {
     if (!enterNewScene) {
@@ -494,15 +521,7 @@ function Sections(): ReactElement {
   }, [enterNewScene, playAnimation])
 
   /**
-   * currentScene 업데이트시 이벤트 처리
-   */
-  useEffect(() => {
-    document.body.setAttribute('id', `show-scene-${currentScene}`)
-    return () => {}
-  }, [currentScene, totalScrollHeight])
-
-  /**
-   * normal 타입 처리
+   * normal 타입 처리 , setLayout 역활
    */
   useEffect(() => {
     // 각 스크롤 섹션의 높이 세팅
@@ -528,8 +547,19 @@ function Sections(): ReactElement {
     }
     setTotalScrollHeight(total)
 
+    const heightRatio = windowDimensions.height / 1080
+    sceneInfo[0].objs.canvas!.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`
+
     return () => {}
   }, [sceneInfo, windowDimensions.height, yOffset])
+
+  /**
+   * currentScene 업데이트시 이벤트 처리
+   */
+  useEffect(() => {
+    document.body.setAttribute('id', `show-scene-${currentScene}`)
+    return () => {}
+  }, [currentScene, totalScrollHeight])
 
   // useEffect(() => {
   //   console.log(currentScene)
@@ -559,6 +589,7 @@ function Sections(): ReactElement {
       // Remove event listener on cleanup
       // window.removeEventListener('resize', handleResize)
       window.removeEventListener('load', handleResize)
+      window.removeEventListener('resize', handleResize)
       window.removeEventListener('scroll', handleScroll)
     }
     // eslint-disable-next-line
@@ -566,7 +597,11 @@ function Sections(): ReactElement {
 
   return (
     <>
-      <ScrollSection0 setSection0Ref={setSection0Ref} />
+      <ScrollSection0
+        setSection0Ref={setSection0Ref}
+        videoImageCount={sceneInfo[0].values!.videoImageCount!}
+        setCanvasImages={setCanvasImages}
+      />
       <ScrollSection1 setSection1Ref={setSection1Ref} />
       <ScrollSection2 setSection2Ref={setSection2Ref} />
       <ScrollSection3 setSection3Ref={setSection3Ref} />

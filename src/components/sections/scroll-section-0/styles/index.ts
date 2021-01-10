@@ -19,3 +19,19 @@ export const ScrollSection0 = styled(Section)`
     }
   `}
 `
+
+export const StickyElemCanvas = styled.div`
+  ${({ theme: { device } }) => css`
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height 100%;
+
+    canvas {
+      top: 50%;
+      left: 50%;
+      position: absolute
+    }
+  `}
+`
