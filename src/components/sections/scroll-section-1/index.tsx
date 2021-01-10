@@ -1,26 +1,26 @@
 import React, { ReactElement, useRef, useEffect } from 'react'
 import { ScrollSection1 as Section, Description } from './styles'
-import { SceneInfo } from 'typings'
 
 interface Props {
-  setObj: (index: number, obj: HTMLElement) => void
-  setSceneInfo: React.Dispatch<React.SetStateAction<SceneInfo[]>>
+  setSection1Ref: (
+    container: HTMLElement,
+    description: HTMLParagraphElement
+  ) => void
 }
 
-function ScrollSection1({ setObj }: Props): ReactElement {
+function ScrollSection1({ setSection1Ref }: Props): ReactElement {
   const sectionRef: React.RefObject<HTMLElement> = useRef(null)
+  const descriptionRef: React.RefObject<HTMLParagraphElement> = useRef(null)
 
   useEffect(() => {
-    if (sectionRef.current != null) {
-      console.log(sectionRef.current.offsetHeight)
-
-      setObj(1, sectionRef.current)
+    if (sectionRef.current !== null && descriptionRef.current !== null) {
+      setSection1Ref(sectionRef.current, descriptionRef.current)
     }
-  }, [setObj, sectionRef])
+  }, [setSection1Ref, sectionRef])
 
   return (
     <Section ref={sectionRef} className="scroll-section" id="scroll-section-1">
-      <Description className="description">
+      <Description className="description" ref={descriptionRef}>
         <strong>보통 스크롤 영역</strong>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae est
         ipsa minima, eligendi error cum vel dolorum pariatur officia facilis

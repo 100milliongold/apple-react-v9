@@ -49,31 +49,11 @@ const initScene: SceneInfo[] = [
   {
     // 1
     type: 'normal',
-    heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
+    // heightNum: 5, // 브라우저 높이의 scrollHeight 세팅
     scrollHeight: 0,
     objs: {
       container: undefined,
-      messageA: undefined,
-      messageB: undefined,
-      messageC: undefined,
-      pinB: undefined,
-      pinC: undefined,
-    },
-    values: {
-      messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
-      messageB_translateY_in: [30, 0, { start: 0.6, end: 0.65 }],
-      messageC_translateY_in: [30, 0, { start: 0.87, end: 0.92 }],
-      messageA_opacity_in: [0, 1, { start: 0.25, end: 0.3 }],
-      messageB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
-      messageC_opacity_in: [0, 1, { start: 0.87, end: 0.92 }],
-      messageA_translateY_out: [0, -20, { start: 0.4, end: 0.45 }],
-      messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
-      messageC_translateY_out: [0, -20, { start: 0.95, end: 1 }],
-      messageA_opacity_out: [1, 0, { start: 0.4, end: 0.45 }],
-      messageB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
-      messageC_opacity_out: [1, 0, { start: 0.95, end: 1 }],
-      pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
-      pinC_scaleY: [0.5, 1, { start: 0.87, end: 0.92 }],
+      content: undefined,
     },
   },
   {
@@ -151,7 +131,7 @@ function Sections(): ReactElement {
       const scrollHeight = sceneInfo[currentScene]!.scrollHeight
       const scrollRatio = currentYOffset / scrollHeight
 
-      if (values.length === 3) {
+      if (values.length !== undefined && values.length === 3) {
         // start ~ end 사이에 애니메이션 진행
         const partScrollStart = values[2].start * scrollHeight
         const partScrollEnd = values[2].end * scrollHeight
@@ -191,7 +171,7 @@ function Sections(): ReactElement {
     switch (currentScene) {
       case 0:
         // console.log('0 play')
-        if (values !== undefined && values.messageA_opacity_in !== undefined) {
+        if (values !== undefined) {
           if (scrollRatio <= 0.22) {
             //in
             const messageA_opacity_in = calcValues(
@@ -203,7 +183,8 @@ function Sections(): ReactElement {
               currentYOffset
             )
             objs.messageA!.style.opacity = `${messageA_opacity_in}`
-            objs.messageA!.style.transform = `translateY(${messageA_translateY_in}%)`
+            //translate3d 가 translateY 보다 최적화가 잘되어 있다고 함
+            objs.messageA!.style.transform = `translate3d(0, ${messageA_translateY_in}%, 0)`
           } else {
             // out
             const messageA_opacity_out = calcValues(
@@ -215,7 +196,85 @@ function Sections(): ReactElement {
               currentYOffset
             )
             objs.messageA!.style.opacity = `${messageA_opacity_out}`
-            objs.messageA!.style.transform = `translateY(${messageA_translateY_out}%)`
+            objs.messageA!.style.transform = `translate3d(0, ${messageA_translateY_out}%, 0)`
+          }
+
+          if (scrollRatio <= 0.42) {
+            //in
+            const messageB_opacity_in = calcValues(
+              values.messageB_opacity_in!,
+              currentYOffset
+            )
+            const messageB_translateY_in = calcValues(
+              values.messageB_translateY_in!,
+              currentYOffset
+            )
+            objs.messageB!.style.opacity = `${messageB_opacity_in}`
+            objs.messageB!.style.transform = `translate3d(0, ${messageB_translateY_in}%, 0)`
+          } else {
+            // out
+            const messageB_opacity_out = calcValues(
+              values.messageB_opacity_out!,
+              currentYOffset
+            )
+            const messageB_translateY_out = calcValues(
+              values.messageB_translateY_out!,
+              currentYOffset
+            )
+            objs.messageB!.style.opacity = `${messageB_opacity_out}`
+            objs.messageB!.style.transform = `translate3d(0, ${messageB_translateY_out}%, 0)`
+          }
+
+          if (scrollRatio <= 0.62) {
+            // in
+            const messageC_opacity_in = calcValues(
+              values.messageC_opacity_in!,
+              currentYOffset
+            )
+            const messageC_translateY_in = calcValues(
+              values.messageC_translateY_in!,
+              currentYOffset
+            )
+            objs.messageC!.style.opacity = `${messageC_opacity_in}`
+            objs.messageC!.style.transform = `translate3d(0, ${messageC_translateY_in}%, 0)`
+          } else {
+            // out
+            const messageC_opacity_out = calcValues(
+              values.messageC_opacity_out!,
+              currentYOffset
+            )
+            const messageC_translateY_out = calcValues(
+              values.messageC_translateY_out!,
+              currentYOffset
+            )
+            objs.messageC!.style.opacity = `${messageC_opacity_out}`
+            objs.messageC!.style.transform = `translate3d(0, ${messageC_translateY_out}%, 0)`
+          }
+
+          if (scrollRatio <= 0.82) {
+            // in
+            const messageD_opacity_in = calcValues(
+              values.messageD_opacity_in!,
+              currentYOffset
+            )
+            const messageD_translateY_in = calcValues(
+              values.messageD_translateY_in!,
+              currentYOffset
+            )
+            objs.messageD!.style.opacity = `${messageD_opacity_in}`
+            objs.messageD!.style.transform = `translate3d(0, ${messageD_translateY_in}%, 0)`
+          } else {
+            // out
+            const messageD_opacity_out = calcValues(
+              values.messageD_opacity_out!,
+              currentYOffset
+            )
+            const messageD_translateY_out = calcValues(
+              values.messageD_translateY_out!,
+              currentYOffset
+            )
+            objs.messageD!.style.opacity = `${messageD_opacity_out}`
+            objs.messageD!.style.transform = `translate3d(0, ${messageD_translateY_out}%, 0)`
           }
         }
         break
@@ -224,6 +283,94 @@ function Sections(): ReactElement {
         break
       case 2:
         // console.log('2 play')
+        if (values !== undefined) {
+          if (scrollRatio <= 0.32) {
+            // in
+            const messageA_opacity_in = calcValues(
+              values.messageA_opacity_in!,
+              currentYOffset
+            )
+            const messageA_translateY_in = calcValues(
+              values.messageA_translateY_in!,
+              currentYOffset
+            )
+            objs.messageA!.style.opacity = `${messageA_opacity_in}`
+            objs.messageA!.style.transform = `translate3d(0, ${messageA_translateY_in}%, 0)`
+          } else {
+            // out
+            const messageA_opacity_out = calcValues(
+              values.messageA_opacity_out!,
+              currentYOffset
+            )
+            const messageA_translateY_out = calcValues(
+              values.messageA_translateY_out!,
+              currentYOffset
+            )
+            objs.messageA!.style.opacity = `${messageA_opacity_out}`
+            objs.messageA!.style.transform = `translate3d(0, ${messageA_translateY_out}%, 0)`
+          }
+
+          if (scrollRatio <= 0.67) {
+            // in
+            const messageB_opacity_in = calcValues(
+              values.messageB_opacity_in!,
+              currentYOffset
+            )
+            const messageB_translateY_in = calcValues(
+              values.messageB_translateY_in!,
+              currentYOffset
+            )
+            const pinB_scaleY = calcValues(values.pinB_scaleY!, currentYOffset)
+            objs.messageB!.style.opacity = `${messageB_opacity_in}`
+            objs.messageB!.style.transform = `translate3d(0, ${messageB_translateY_in}%, 0)`
+            objs.pinB!.style.transform = `scaleY(${pinB_scaleY})`
+          } else {
+            // out
+            const messageB_opacity_out = calcValues(
+              values.messageB_opacity_out!,
+              currentYOffset
+            )
+            const messageB_translateY_out = calcValues(
+              values.messageB_translateY_out!,
+              currentYOffset
+            )
+            const pinB_scaleY = calcValues(values.pinB_scaleY!, currentYOffset)
+            objs.messageB!.style.opacity = `${messageB_opacity_out}`
+            objs.messageB!.style.transform = `translate3d(0, ${messageB_translateY_out}%, 0)`
+            objs.pinB!.style.transform = `scaleY(${pinB_scaleY})`
+          }
+
+          if (scrollRatio <= 0.93) {
+            // in
+            const messageC_opacity_in = calcValues(
+              values.messageC_opacity_in!,
+              currentYOffset
+            )
+            const messageC_translateY_in = calcValues(
+              values.messageC_translateY_in!,
+              currentYOffset
+            )
+            const pinC_scaleY = calcValues(values.pinC_scaleY!, currentYOffset)
+            objs.messageC!.style.opacity = `${messageC_opacity_in}`
+            objs.messageC!.style.transform = `translate3d(0, ${messageC_translateY_in}%, 0)`
+            objs.pinC!.style.transform = `scaleY(${pinC_scaleY})`
+          } else {
+            // out
+            const messageC_opacity_out = calcValues(
+              values.messageC_opacity_out!,
+              currentYOffset
+            )
+            const messageC_translateY_out = calcValues(
+              values.messageC_translateY_out!,
+              currentYOffset
+            )
+            const pinC_scaleY = calcValues(values.pinC_scaleY!, currentYOffset)
+            objs.messageC!.style.opacity = `${messageC_opacity_out}`
+            objs.messageC!.style.transform = `translate3d(0, ${messageC_translateY_out}%, 0)`
+            objs.pinC!.style.transform = `scaleY(${pinC_scaleY})`
+          }
+        }
+
         break
       case 3:
         // console.log('3 play')
@@ -238,45 +385,71 @@ function Sections(): ReactElement {
    * 최초 로딩시 높이값 설정
    * @param height
    */
-
   /**
    * ScrollSection0 ~ ScrollSection3 항목들의 virtual dom 의 겍체를 적용함
-   * @param index
-   * @param html
    */
-  const setObj = useCallback(
-    (index: number, html: HTMLElement) => {
-      sceneInfo[index].objs.container = html
-      sceneInfo[
-        index
-      ].objs.container!.style.height = `${sceneInfo[index].scrollHeight}px`
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-
-  const setObjs = useCallback(
+  const setSection0Ref = useCallback(
     (
-      index: number,
       container: HTMLElement,
       messageA: HTMLDivElement,
       messageB: HTMLDivElement,
       messageC: HTMLDivElement,
       messageD: HTMLDivElement
     ) => {
-      const nextState = [...sceneInfo]
-      nextState[index].objs.container = container
-      nextState[index].objs.messageA = messageA
-      nextState[index].objs.messageB = messageB
-      nextState[index].objs.messageC = messageC
-      nextState[index].objs.messageD = messageD
+      sceneInfo[0].objs.container = container
+      sceneInfo[0].objs.messageA = messageA
+      sceneInfo[0].objs.messageB = messageB
+      sceneInfo[0].objs.messageC = messageC
+      sceneInfo[0].objs.messageD = messageD
+      sceneInfo[0].objs.container!.style.height = `${sceneInfo[1].scrollHeight}px`
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+  /**
+   * ScrollSection0 ~ ScrollSection3 항목들의 virtual dom 의 겍체를 적용함
+   */
+  const setSection1Ref = useCallback(
+    (html: HTMLElement, description: HTMLParagraphElement) => {
+      sceneInfo[1].objs.container = html
+      sceneInfo[1].objs.content = description
+      sceneInfo[1].objs.container!.style.height = `${sceneInfo[1].scrollHeight}px`
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+  /**
+   * ScrollSection0 ~ ScrollSection3 항목들의 virtual dom 의 겍체를 적용함
+   */
+  const setSection2Ref = useCallback(
+    (
+      html: HTMLElement,
+      messageA: HTMLDivElement,
+      messageB: HTMLDivElement,
+      messageC: HTMLDivElement,
+      pinB_Ref: HTMLDivElement,
+      pinC_Ref: HTMLDivElement
+    ) => {
+      sceneInfo[2].objs.container = html
+      sceneInfo[2].objs.messageA = messageA
+      sceneInfo[2].objs.messageB = messageB
+      sceneInfo[2].objs.messageC = messageC
+      sceneInfo[2].objs.pinB = pinB_Ref
+      sceneInfo[2].objs.pinC = pinC_Ref
 
-      nextState.forEach(({ objs: { container }, scrollHeight }) => {
-        if (container !== undefined) {
-          container.style.height = `${scrollHeight}px`
-        }
-      })
-      setSceneInfo(nextState)
+      sceneInfo[2].objs.container!.style.height = `${sceneInfo[2].scrollHeight}px`
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+  /**
+   * ScrollSection0 ~ ScrollSection3 항목들의 virtual dom 의 겍체를 적용함
+   */
+  const setSection3Ref = useCallback(
+    (html: HTMLElement, canvas: HTMLParagraphElement) => {
+      sceneInfo[3].objs.container = html
+      sceneInfo[3].objs.canvasCaption = canvas
+      sceneInfo[3].objs.container!.style.height = `${sceneInfo[3].scrollHeight}px`
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -336,7 +509,7 @@ function Sections(): ReactElement {
     for (let i = 0; i < sceneInfo.length; i++) {
       if (sceneInfo[i].type === 'stick') {
         sceneInfo[i].scrollHeight =
-          sceneInfo[i].heightNum * windowDimensions.height
+          sceneInfo[i].heightNum! * windowDimensions.height
       } else if (sceneInfo[i].type === 'normal') {
         sceneInfo[i].scrollHeight = sceneInfo[i].objs.container?.scrollHeight!
       }
@@ -393,10 +566,10 @@ function Sections(): ReactElement {
 
   return (
     <>
-      <ScrollSection0 setObjs={setObjs} setObj={setObj} />
-      <ScrollSection1 setSceneInfo={setSceneInfo} setObj={setObj} />
-      <ScrollSection2 setSceneInfo={setSceneInfo} setObj={setObj} />
-      <ScrollSection3 setSceneInfo={setSceneInfo} setObj={setObj} />
+      <ScrollSection0 setSection0Ref={setSection0Ref} />
+      <ScrollSection1 setSection1Ref={setSection1Ref} />
+      <ScrollSection2 setSection2Ref={setSection2Ref} />
+      <ScrollSection3 setSection3Ref={setSection3Ref} />
     </>
   )
 }

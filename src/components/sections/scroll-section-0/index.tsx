@@ -1,12 +1,9 @@
 import React, { ReactElement, useRef, useEffect } from 'react'
 import { ScrollSection0 as Section } from './styles'
 import { MainMessage } from '../styles'
-import { SceneInfo } from 'typings'
 
 interface Props {
-  setObj: (index: number, obj: HTMLElement) => void
-  setObjs: (
-    index: number,
+  setSection0Ref: (
     container: HTMLElement,
     messageA: HTMLDivElement,
     messageB: HTMLDivElement,
@@ -15,7 +12,7 @@ interface Props {
   ) => void
 }
 
-function ScrollSection0({ setObjs }: Props): ReactElement {
+function ScrollSection0({ setSection0Ref }: Props): ReactElement {
   const sectionRef: React.RefObject<HTMLElement> = useRef(null)
   const mainMessageA: React.RefObject<HTMLDivElement> = useRef(null)
   const mainMessageB: React.RefObject<HTMLDivElement> = useRef(null)
@@ -30,8 +27,7 @@ function ScrollSection0({ setObjs }: Props): ReactElement {
       mainMessageC.current !== null &&
       mainMessageD.current !== null
     ) {
-      setObjs(
-        0,
+      setSection0Ref(
         sectionRef.current,
         mainMessageA.current,
         mainMessageB.current,
@@ -39,7 +35,7 @@ function ScrollSection0({ setObjs }: Props): ReactElement {
         mainMessageD.current
       )
     }
-  }, [setObjs])
+  }, [setSection0Ref])
 
   return (
     <Section ref={sectionRef} className="scroll-section" id="scroll-section-0">

@@ -1,19 +1,20 @@
 import React, { ReactElement, useRef, useEffect } from 'react'
 import Section from './styles'
 import { MidMessage, CanvasCaption } from '../styles'
-import { SceneInfo } from 'typings'
 
 interface Props {
-  setObj: (index: number, obj: HTMLElement) => void
-  setSceneInfo: React.Dispatch<React.SetStateAction<SceneInfo[]>>
+  setSection3Ref: (obj: HTMLElement, canvas: HTMLParagraphElement) => void
 }
 
-function ScrollSection3({ setObj }: Props): ReactElement {
+function ScrollSection3({ setSection3Ref }: Props): ReactElement {
   const sectionRef: React.RefObject<HTMLElement> = useRef(null)
+  const canvas: React.RefObject<HTMLParagraphElement> = useRef(null)
 
   useEffect(() => {
-    if (sectionRef.current != null) setObj(3, sectionRef.current)
-  }, [sectionRef.current])
+    if (sectionRef.current !== null && canvas.current !== null) {
+      setSection3Ref(sectionRef.current, canvas.current)
+    }
+  }, [setSection3Ref])
 
   return (
     <Section ref={sectionRef} className="scroll-section" id="scroll-section-3">
@@ -25,7 +26,7 @@ function ScrollSection3({ setObj }: Props): ReactElement {
         아름답고 부드러운 음료 공간.
       </MidMessage>
 
-      <CanvasCaption className="canvas-caption">
+      <CanvasCaption ref={canvas} className="canvas-caption">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet at
         fuga quae perspiciatis veniam impedit et, ratione est optio porro.
         Incidunt aperiam nemo voluptas odit quisquam harum in mollitia. Incidunt

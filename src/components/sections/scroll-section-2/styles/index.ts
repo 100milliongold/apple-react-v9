@@ -8,7 +8,7 @@ export const ScrollSection2 = styled(Section)`
       top: 10%;
       left: 40%;
     }
-    &#scroll-section-2 .b {
+    $#scroll-section-2 .c {
       top: 15%;
       left: 45%;
     }
@@ -24,10 +24,11 @@ export const ScrollSection2 = styled(Section)`
       }
 
       &#scroll-section-2 .b {
-        top: 50%;
+        top: 20%;
         left: 53%;
       }
-      &#scroll-section-2 .b {
+      &#scroll-section-2 .c {
+        top: 15%;
         left: 55%;
       }
     }

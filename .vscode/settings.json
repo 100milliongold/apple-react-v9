@@ -9,5 +9,6 @@
     "source.fixAll": true
   },
   "javascript.format.enable": true,
-  "material-icon-theme.activeIconPack": "react_redux"
+  "material-icon-theme.activeIconPack": "react_redux",
+  "liveServer.settings.port": 5501
 }

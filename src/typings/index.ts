@@ -1,16 +1,17 @@
 export interface SceneInfo {
   type: 'stick' | 'normal'
-  heightNum: number // 브라우저 높이의 scrollHeight 세팅
+  heightNum?: number // 브라우저 높이의 scrollHeight 세팅
   scrollHeight: number
   objs: {
     container?: HTMLElement
+    content?: HTMLParagraphElement
     messageA?: HTMLDivElement
     messageB?: HTMLDivElement
     messageC?: HTMLDivElement
     messageD?: HTMLDivElement
     pinB?: HTMLDivElement
     pinC?: HTMLDivElement
-    canvasCaption?: HTMLDivElement
+    canvasCaption?: HTMLParagraphElement
   }
   values?: {
     messageA_opacity_in?: any[]
