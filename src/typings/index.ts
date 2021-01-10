@@ -18,6 +18,7 @@ export interface SceneInfo {
   }
   values?: {
     videoImageCount?: number
+    canvas_opacity?: any[]
     imageSequemce?: number[]
     messageA_opacity_in?: any[]
     messageB_opacity_in?: any[]

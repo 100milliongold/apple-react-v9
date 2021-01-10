@@ -9,7 +9,10 @@ export const ScrollSection0 = styled(Section)`
   ${({ theme: { device } }) => css`
     h1 {
       font-size: 4rem;
+      top: -10vh;
       text-align: center;
+      position: relative;
+      z-index: 5;
     }
     // (min-width: 1024px)
     @media ${device.laptop} {
@@ -31,7 +34,8 @@ export const StickyElemCanvas = styled.div`
     canvas {
       top: 50%;
       left: 50%;
-      position: absolute
+      position: absolute;
+      z-index: 0;
     }
   `}
 `

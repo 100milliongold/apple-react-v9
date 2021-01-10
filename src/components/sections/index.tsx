@@ -33,6 +33,7 @@ const initScene: SceneInfo[] = [
     values: {
       videoImageCount: 300,
       imageSequemce: [0, 299],
+      canvas_opacity: [1, 0, { srart: 0.9, end: 1 }, ''],
       messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
       messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
       messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }],
@@ -159,9 +160,13 @@ function Sections(): ReactElement {
         rv = scrollRatio * (values[1] - values[0]) + values[0]
       }
 
+      // if (values.length > 3) {
+      //   console.log(rv, values, currentYOffset)
+      // }
+
       return isNaN(rv) ? 0 : rv
     },
-    [currentScene, sceneInfo]
+    [currentScene]
   )
 
   const playAnimation = useCallback(() => {
@@ -178,13 +183,21 @@ function Sections(): ReactElement {
         // console.log('0 play')
 
         if (values !== undefined) {
+          // console.log(sequence, objs.vidioImages![sequence])
           let sequence = Math.round(
             calcValues(values.imageSequemce!, currentYOffset)
           )
-
-          if (objs.vidioImages!.length > 0 && sequence <= 300) {
-            // console.log(sequence, objs.vidioImages![sequence])
+          if (objs.vidioImages![sequence] !== undefined) {
             objs.context!.drawImage(objs.vidioImages![sequence], 0, 0)
+          } else {
+            // objs.context!.clearRect(0, 0, 0, 0)
+          }
+          if (values.canvas_opacity) {
+            const canvas_opacity = calcValues(
+              values.canvas_opacity,
+              currentYOffset
+            )
+            objs.canvas!.style.opacity = `${canvas_opacity}`
           }
 
           if (scrollRatio <= 0.22) {
@@ -394,7 +407,7 @@ function Sections(): ReactElement {
       default:
         break
     }
-  }, [calcValues, currentScene, prevScrollHeight, sceneInfo, yOffset])
+  }, [calcValues, currentScene, prevScrollHeight, yOffset])
 
   /**
    * 최초 로딩시 높이값 설정
@@ -428,7 +441,7 @@ function Sections(): ReactElement {
   const setCanvasImages = useCallback(
     (imgs: HTMLImageElement[]) => {
       sceneInfo[0].objs.vidioImages = imgs
-      console.log(imgs)
+      // console.log(imgs)
     },
     [sceneInfo]
   )
@@ -511,7 +524,8 @@ function Sections(): ReactElement {
       setEnterNewScene(true)
       setCurrentScene(nextCurrentScene)
     }
-  }, [yOffset, prevScrollHeight, setCurrentScene, currentScene, sceneInfo])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [yOffset, prevScrollHeight, setCurrentScene])
 
   useEffect(() => {
     if (!enterNewScene) {
@@ -564,6 +578,20 @@ function Sections(): ReactElement {
   // useEffect(() => {
   //   console.log(currentScene)
   // }, [yOffset])
+
+  useEffect(() => {
+    if (
+      sceneInfo[0].objs.vidioImages !== undefined &&
+      sceneInfo[0].objs.vidioImages.length > 0 &&
+      [0] !== undefined
+    ) {
+      sceneInfo[0].objs.context!.drawImage(
+        sceneInfo[0].objs.vidioImages![0],
+        0,
+        0
+      )
+    }
+  }, [sceneInfo, windowDimensions])
 
   /**
    * 최초 컨포넌드 마운트시 이벤트
