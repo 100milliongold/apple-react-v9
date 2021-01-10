@@ -4,6 +4,15 @@ import { Section } from '../../styles'
 
 export const ScrollSection2 = styled(Section)`
   ${({ theme: { device } }) => css`
+    &#scroll-section-2 .b {
+      top: 10%;
+      left: 40%;
+    }
+    &#scroll-section-2 .b {
+      top: 15%;
+      left: 45%;
+    }
+
     .main-message {
       font-size: 3.5rem;
     }
@@ -12,6 +21,14 @@ export const ScrollSection2 = styled(Section)`
     @media ${device.laptop} {
       .main-message {
         font-size: 6vw;
+      }
+
+      &#scroll-section-2 .b {
+        top: 50%;
+        left: 53%;
+      }
+      &#scroll-section-2 .b {
+        left: 55%;
       }
     }
   `}

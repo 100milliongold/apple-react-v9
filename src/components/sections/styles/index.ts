@@ -14,6 +14,7 @@ export const MainMessage = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    top: 35vh;
     margin: 5px 0;
     height: 3em;
     font-size: 2.5rem;
@@ -33,7 +34,7 @@ export const MainMessage = styled.div`
 
     &.sticky-elem {
       position: fixed;
-      top: 0;
+      /* top: 0; */
       left: 0;
       width: 100%;
       display: none;

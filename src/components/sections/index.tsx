@@ -6,6 +6,14 @@ import ScrollSection1 from './scroll-section-1'
 import ScrollSection2 from './scroll-section-2'
 import ScrollSection3 from './scroll-section-3'
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window
+  return {
+    width,
+    height,
+  }
+}
+
 const initScene: SceneInfo[] = [
   {
     // 0
@@ -20,8 +28,22 @@ const initScene: SceneInfo[] = [
       messageD: undefined,
     },
     values: {
-      messageA_opacity: [0, 1, { start: 0.1, end: 0.2 }],
-      messageB_opacity: [0, 1, { start: 0.3, end: 0.4 }],
+      messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
+      messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
+      messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }],
+      messageD_opacity_in: [0, 1, { start: 0.7, end: 0.8 }],
+      messageA_translateY_in: [20, 0, { start: 0.1, end: 0.2 }],
+      messageB_translateY_in: [20, 0, { start: 0.3, end: 0.4 }],
+      messageC_translateY_in: [20, 0, { start: 0.5, end: 0.6 }],
+      messageD_translateY_in: [20, 0, { start: 0.7, end: 0.8 }],
+      messageA_opacity_out: [1, 0, { start: 0.25, end: 0.3 }],
+      messageB_opacity_out: [1, 0, { start: 0.45, end: 0.5 }],
+      messageC_opacity_out: [1, 0, { start: 0.65, end: 0.7 }],
+      messageD_opacity_out: [1, 0, { start: 0.85, end: 0.9 }],
+      messageA_translateY_out: [0, -20, { start: 0.25, end: 0.3 }],
+      messageB_translateY_out: [0, -20, { start: 0.45, end: 0.5 }],
+      messageC_translateY_out: [0, -20, { start: 0.65, end: 0.7 }],
+      messageD_translateY_out: [0, -20, { start: 0.85, end: 0.9 }],
     },
   },
   {
@@ -31,6 +53,27 @@ const initScene: SceneInfo[] = [
     scrollHeight: 0,
     objs: {
       container: undefined,
+      messageA: undefined,
+      messageB: undefined,
+      messageC: undefined,
+      pinB: undefined,
+      pinC: undefined,
+    },
+    values: {
+      messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
+      messageB_translateY_in: [30, 0, { start: 0.6, end: 0.65 }],
+      messageC_translateY_in: [30, 0, { start: 0.87, end: 0.92 }],
+      messageA_opacity_in: [0, 1, { start: 0.25, end: 0.3 }],
+      messageB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
+      messageC_opacity_in: [0, 1, { start: 0.87, end: 0.92 }],
+      messageA_translateY_out: [0, -20, { start: 0.4, end: 0.45 }],
+      messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
+      messageC_translateY_out: [0, -20, { start: 0.95, end: 1 }],
+      messageA_opacity_out: [1, 0, { start: 0.4, end: 0.45 }],
+      messageB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
+      messageC_opacity_out: [1, 0, { start: 0.95, end: 1 }],
+      pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
+      pinC_scaleY: [0.5, 1, { start: 0.87, end: 0.92 }],
     },
   },
   {
@@ -40,6 +83,27 @@ const initScene: SceneInfo[] = [
     scrollHeight: 0,
     objs: {
       container: undefined,
+      messageA: undefined,
+      messageB: undefined,
+      messageC: undefined,
+      pinB: undefined,
+      pinC: undefined,
+    },
+    values: {
+      messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
+      messageB_translateY_in: [30, 0, { start: 0.6, end: 0.65 }],
+      messageC_translateY_in: [30, 0, { start: 0.87, end: 0.92 }],
+      messageA_opacity_in: [0, 1, { start: 0.25, end: 0.3 }],
+      messageB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
+      messageC_opacity_in: [0, 1, { start: 0.87, end: 0.92 }],
+      messageA_translateY_out: [0, -20, { start: 0.4, end: 0.45 }],
+      messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
+      messageC_translateY_out: [0, -20, { start: 0.95, end: 1 }],
+      messageA_opacity_out: [1, 0, { start: 0.4, end: 0.45 }],
+      messageB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
+      messageC_opacity_out: [1, 0, { start: 0.95, end: 1 }],
+      pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
+      pinC_scaleY: [0.5, 1, { start: 0.87, end: 0.92 }],
     },
   },
   {
@@ -49,13 +113,19 @@ const initScene: SceneInfo[] = [
     scrollHeight: 0,
     objs: {
       container: undefined,
+      canvasCaption: undefined,
     },
+    values: {},
   },
 ]
 
 function Sections(): ReactElement {
   // window.pageYOffset 대신 쓸변수
   const [yOffset, setYOffset] = useState<number>(0)
+
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  )
 
   // 현재 스크롤 위치 (yOffset) 보다 이전에 위치한 스크롤 섹션들의 스크롤 높이값의 합
   const [prevScrollHeight, setPrevScrollHeight] = useState<number>(0)
@@ -114,16 +184,39 @@ function Sections(): ReactElement {
     const values = sceneInfo[currentScene].values
     const currentYOffset = yOffset - prevScrollHeight
 
+    const scrollHeight = sceneInfo[currentScene].scrollHeight
+
+    const scrollRatio = (yOffset - prevScrollHeight) / scrollHeight //현재 씬의 scrollHeight;
+
     switch (currentScene) {
       case 0:
         // console.log('0 play')
-        if (values !== undefined && values.messageA_opacity !== undefined) {
-          let messageA_opacity_in = calcValues(
-            values.messageA_opacity!,
-            currentYOffset
-          )
-          objs.messageA!.style.opacity = `${messageA_opacity_in}`
-          console.log(messageA_opacity_in)
+        if (values !== undefined && values.messageA_opacity_in !== undefined) {
+          if (scrollRatio <= 0.22) {
+            //in
+            const messageA_opacity_in = calcValues(
+              values.messageA_opacity_in!,
+              currentYOffset
+            )
+            const messageA_translateY_in = calcValues(
+              values.messageA_translateY_in!,
+              currentYOffset
+            )
+            objs.messageA!.style.opacity = `${messageA_opacity_in}`
+            objs.messageA!.style.transform = `translateY(${messageA_translateY_in}%)`
+          } else {
+            // out
+            const messageA_opacity_out = calcValues(
+              values.messageA_opacity_out!,
+              currentYOffset
+            )
+            const messageA_translateY_out = calcValues(
+              values.messageA_translateY_out!,
+              currentYOffset
+            )
+            objs.messageA!.style.opacity = `${messageA_opacity_out}`
+            objs.messageA!.style.transform = `translateY(${messageA_translateY_out}%)`
+          }
         }
         break
       case 1:
@@ -145,34 +238,6 @@ function Sections(): ReactElement {
    * 최초 로딩시 높이값 설정
    * @param height
    */
-  const setLayout = useCallback(
-    (height: number) => {
-      // 각 스크롤 섹션의 높이 세팅
-      const layout = sceneInfo.map((scene) => ({
-        ...scene,
-        scrollHeight: scene.heightNum * height,
-      }))
-
-      layout.forEach(({ objs: { container }, scrollHeight }) => {
-        if (container !== undefined) {
-          container.style.height = `${scrollHeight}px`
-        }
-      })
-
-      setSceneInfo(layout)
-
-      let total = 0
-      for (let i = 0; i < layout.length; i++) {
-        total += layout[i].scrollHeight
-        if (total >= yOffset) {
-          setCurrentScene(i)
-          break
-        }
-      }
-      setTotalScrollHeight(total)
-    },
-    [sceneInfo, yOffset]
-  )
 
   /**
    * ScrollSection0 ~ ScrollSection3 항목들의 virtual dom 의 겍체를 적용함
@@ -181,14 +246,10 @@ function Sections(): ReactElement {
    */
   const setObj = useCallback(
     (index: number, html: HTMLElement) => {
-      const nextState = [...sceneInfo]
-      nextState[index].objs.container = html
-      nextState.forEach(({ objs: { container }, scrollHeight }) => {
-        if (container !== undefined) {
-          container.style.height = `${scrollHeight}px`
-        }
-      })
-      setSceneInfo(nextState)
+      sceneInfo[index].objs.container = html
+      sceneInfo[
+        index
+      ].objs.container!.style.height = `${sceneInfo[index].scrollHeight}px`
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -267,6 +328,36 @@ function Sections(): ReactElement {
     return () => {}
   }, [currentScene, totalScrollHeight])
 
+  /**
+   * normal 타입 처리
+   */
+  useEffect(() => {
+    // 각 스크롤 섹션의 높이 세팅
+    for (let i = 0; i < sceneInfo.length; i++) {
+      if (sceneInfo[i].type === 'stick') {
+        sceneInfo[i].scrollHeight =
+          sceneInfo[i].heightNum * windowDimensions.height
+      } else if (sceneInfo[i].type === 'normal') {
+        sceneInfo[i].scrollHeight = sceneInfo[i].objs.container?.scrollHeight!
+      }
+      sceneInfo[
+        i
+      ].objs.container!.style.height = `${sceneInfo[i].scrollHeight}px`
+    }
+
+    let total = 0
+    for (let i = 0; i < sceneInfo.length; i++) {
+      total += sceneInfo[i].scrollHeight
+      if (total >= yOffset) {
+        setCurrentScene(i)
+        break
+      }
+    }
+    setTotalScrollHeight(total)
+
+    return () => {}
+  }, [sceneInfo, windowDimensions.height, yOffset])
+
   // useEffect(() => {
   //   console.log(currentScene)
   // }, [yOffset])
@@ -278,7 +369,7 @@ function Sections(): ReactElement {
     // Handler to call on window resize
     function handleResize() {
       // Set window width/height to state
-      setLayout(window.innerHeight)
+      setWindowDimensions(getWindowDimensions())
     }
     // Add event listener
     window.addEventListener('resize', handleResize)

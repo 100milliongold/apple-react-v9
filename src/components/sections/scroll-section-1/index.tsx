@@ -11,8 +11,12 @@ function ScrollSection1({ setObj }: Props): ReactElement {
   const sectionRef: React.RefObject<HTMLElement> = useRef(null)
 
   useEffect(() => {
-    if (sectionRef.current != null) setObj(1, sectionRef.current)
-  }, [sectionRef.current])
+    if (sectionRef.current != null) {
+      console.log(sectionRef.current.offsetHeight)
+
+      setObj(1, sectionRef.current)
+    }
+  }, [setObj, sectionRef])
 
   return (
     <Section ref={sectionRef} className="scroll-section" id="scroll-section-1">

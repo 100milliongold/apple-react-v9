@@ -13,7 +13,7 @@ function ScrollSection2({ setObj }: Props): ReactElement {
 
   useEffect(() => {
     if (sectionRef.current != null) setObj(2, sectionRef.current)
-  }, [sectionRef.current])
+  }, [setObj])
 
   return (
     <Section ref={sectionRef} className="scroll-section" id="scroll-section-2">
